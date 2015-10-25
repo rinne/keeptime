@@ -24,6 +24,7 @@ Somewhat more complex measurement:
     }
     console.log('code took ' + kt.get() + ' seconds to run.');
 
+
 METHODS
 =======
 
