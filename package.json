@@ -1,0 +1,28 @@
+{
+	"name": "keeptime",
+	"version": "1.0.0",
+	"description": "A simple timer class to measure passing of the time.",
+	"main": "keeptime.js",
+	"scripts": {
+		"test": "node ./test/keeptime-test.js"
+	},
+	"engines": {
+		"node": ">=0.10.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/rinne/keeptime.git"
+	},
+	"keywords": [
+		"timer",
+		"time",
+		"measurement",
+		"debugging"
+	],
+	"author": "Timo J. Rinne <tri@iki.fi>",
+	"license": "GPL-2.0",
+	"bugs": {
+		"url": "https://github.com/rinne/keeptime/issues"
+	},
+	"homepage": "https://github.com/rinne/keeptime#readme"
+}
