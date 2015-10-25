@@ -17,7 +17,7 @@ Somewhat more complex measurement:
         kt.start();
         ...
         // do something time critical and interesting here
-	// and measure the time cumulatively
+        // and measure the time cumulatively
         ...
         kt.stop();
         ... // do something non-interesting here

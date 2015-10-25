@@ -1,6 +1,6 @@
 {
 	"name": "keeptime",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "A simple timer class to measure passing of the time.",
 	"main": "keeptime.js",
 	"scripts": {
