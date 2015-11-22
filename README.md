@@ -1,4 +1,4 @@
-IN A NUTSHELL
+In A Nutshell
 =============
 
 KeepTime is a simple class to make time measurements in node.js.
@@ -26,7 +26,7 @@ for (var i=0; i<42; i++) {
 console.log('code took ' + kt.get() + ' seconds to run.');
 ```
 
-METHODS
+Methods
 =======
 
 KeepTime(autoStart)
@@ -71,13 +71,13 @@ run state of the timer (i.e. running timer remains running and stopped
 timer remains stopped).
 
 
-AUTHOR
+Author
 ======
 
 Timo J. Rinne <tri@iki.fi>
 
 
-LICENSE
+License
 =======
 
 GPL-2.0
