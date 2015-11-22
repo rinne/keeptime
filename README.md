@@ -5,25 +5,26 @@ KeepTime is a simple class to make time measurements in node.js.
 
 In a simple case, time can be measured just by:
 
-    var kt = new KeepTime(true); // timer is autostarted
-    ... // your own code here
-    console.log('code took ' + kt.get() + ' seconds to run.');
+```js
+var kt = new KeepTime(true); // timer is autostarted
+... // your own code here
+console.log('code took ' + kt.get() + ' seconds to run.');
 
 Somewhat more complex measurement:
 
-    var kt = new KeepTime(); // timer is not started
-    for (var i=0; i<42; i++) {
-        ... // do something non-interesting here
-        kt.start();
-        ...
-        // do something time critical and interesting here
-        // and measure the time cumulatively
-        ...
-        kt.stop();
-        ... // do something non-interesting here
-    }
-    console.log('code took ' + kt.get() + ' seconds to run.');
-
+var kt = new KeepTime(); // timer is not started
+for (var i=0; i<42; i++) {
+    ... // do something non-interesting here
+    kt.start();
+    ...
+    // do something time critical and interesting here
+    // and measure the time cumulatively
+    ...
+    kt.stop();
+    ... // do something non-interesting here
+}
+console.log('code took ' + kt.get() + ' seconds to run.');
+```
 
 METHODS
 =======
