@@ -18,6 +18,8 @@ var KeepTime = function(autoStart) {
     this.timerStop = autoStart ? undefined : [ this.timerStart[0], this.timerStart[1] ];
 };
 
+var convertSecondsToReadable = undefined;
+
 KeepTime.prototype.get = function() {
     var time = this.timerStop ? this.timerStop : process.hrtime();
     return (time[0] - this.timerStart[0]) + ((time[1] - this.timerStart[1]) * 0.000000001);
@@ -62,6 +64,13 @@ KeepTime.prototype.start = function() {
 
 KeepTime.prototype.reset = function() {
     this.timerStart = this.timerStop ? [ this.timerStop[0], this.timerStop[1] ] : process.hrtime();
+}
+
+KeepTime.prototype.getReadable = function(decimals) {
+	if (convertSecondsToReadable === undefined) {
+		convertSecondsToReadable = require('./readable.js');
+	}
+	return convertSecondsToReadable(this.get(), decimals);
 }
 
 module.exports = KeepTime;

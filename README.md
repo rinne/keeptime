@@ -43,6 +43,26 @@ KeepTime.prototype.get()
 Look up the current time from a timer and return the time the timer
 has been running in seconds.
 
+KeepTime.prototype.getReadable(decimals)
+------------------------
+
+Look up the current time from a timer and return the time the timer
+has been running in a readable string with given number of decimals
+after seconds. Maximum number of decimals is 9 and the default is 0.
+
+If the time is less than one hour (i.e. 3600 seconds), it's is
+returned in form 'mm:ss' (followed by possible decimals like other
+formats). If the time is less than one day, it's returned in format
+'hh:mm:ss'. If it's more than a day, it's returned in format
+'d+hh:mm:ss'. For time values larger than one year, approximate number
+of years is added to the string. For ridiculously big values, only
+approximate number of years is returned and smaller units are omitted
+altogether, which naturally causes also decimals to be ignored.
+
+In case the least significant parts of the timer value is beyond the
+precision of number type, the return value is padded with zeros rather
+than arbitrary digits.
+
 KeepTime.prototype.getArray()
 -----------------------------
 
