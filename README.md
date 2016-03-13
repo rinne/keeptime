@@ -43,8 +43,18 @@ KeepTime.prototype.get()
 Look up the current time from a timer and return the time the timer
 has been running in seconds.
 
+KeepTime.prototype.set(seconds)
+-------------------------------
+
+Set the timer to given number of seconds. Only finite, non-negative
+numbers are allowed.
+
+Avoid using ridiculously high values.  Above 2^40 seconds, the timer
+granularity starts to degrade, but since it's already around 6e32
+years, it should not be a problem.  Below that, it should be ok.
+
 KeepTime.prototype.getReadable(decimals)
-------------------------
+----------------------------------------
 
 Look up the current time from a timer and return the time the timer
 has been running in a readable string with given number of decimals

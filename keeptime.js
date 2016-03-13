@@ -25,6 +25,33 @@ KeepTime.prototype.get = function() {
     return (time[0] - this.timerStart[0]) + ((time[1] - this.timerStart[1]) * 0.000000001);
 }
 
+KeepTime.prototype.set = function(seconds) {
+	seconds = parseFloat(seconds);
+	if (! isFinite(seconds)) {
+		e = new Error('Bad timer value');
+		e.name = 'TypeError';
+		throw e;
+	}
+	if (seconds < 0) {
+		e = new Error('Can\'t set timer to negative value');
+		e.name = 'RangeError';
+		throw e;
+	}
+	var running = (! this.timerStop);
+	if ((seconds * 10) > Number.MAX_SAFE_INTEGER) {
+		this.timerStart = [ -(Math.round(seconds)), 0 ];
+	} else {
+		this.timerStart =
+			[ -(Math.ceil(seconds)),
+			  Math.floor(Math.min(999999999, Math.max(0, -((seconds - Math.ceil(seconds)) * 1000000000)))) ];
+	}
+	this.timerStop = [0, 0];
+	console.log(this);
+	if (running) {
+		this.start();
+	}
+}
+
 KeepTime.prototype.getArray = function() {
     var time = this.timerStop ? this.timerStop : process.hrtime();
     var rv = [ time[0] - this.timerStart[0], time[1] - this.timerStart[1] ];
