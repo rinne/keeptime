@@ -1,5 +1,5 @@
 module.exports = function(seconds, decimals) {
-	var s, m, h, d, st, dt, yt, ps, pm, ph, pd, pf, rv, years, months;
+	var s, m, h, d, st, dt, yt, ps, pm, ph, pd, pf, years, months, rv, i;
 	decimals = parseInt(decimals);
 	if (! (isFinite(decimals) && (decimals > 0))) {
 		decimals = 0;
@@ -15,7 +15,12 @@ module.exports = function(seconds, decimals) {
 	}
 	m = Math.floor(seconds / 60);
 	if (seconds >= Number.MAX_SAFE_INTEGER) {
-		f = s = 0;
+		s = 0;
+		if (decimals > 0) {
+			pf = '.' + '0'.repeat(decimals);
+		} else {
+			pf = '';
+		}
 	} else {
 		st = seconds;
 		if (decimals > 0) {
