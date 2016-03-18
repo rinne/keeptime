@@ -8,15 +8,43 @@
  *  published by the Free Software Foundation.
  */
 
+"use strict";
+
 (function() {
 	var testTime = 0.5;
 	var testTimeGrace = 0.25;
 	var KeepTime = require('../keeptime.js');
+	var globalTimer = new KeepTime(true);
 	var timer = undefined;
 	var t1, t2, t3, t4, t5, t6;
 	var ok = function() {
-		console.log('All OK.');
+		console.log('All OK. Runtime as readable string was: ' + globalTimer.getReadable(9));
 		process.exit(0);
+	}
+	var check5 = function() {
+		var i;
+		timer.stop();
+		for (i = 0.000000001; i <= Math.pow(2,120); i *= 10) {
+			timer.set(i);
+			console.log('Timer set to ' +
+						(((i >= 0.9) && (i < 1000000999)) ? i.toFixed(0) : i.toPrecision(1)) +
+						's yields readable time as ' + timer.getReadable((i < 1) ? 9 : 0));
+		}
+		timeout = setTimeout(ok, 0);
+	}
+	var check4 = function() {
+		var kt = new KeepTime();
+		var i, pt, t;
+		pt = 0;
+		kt.start();
+		for (i = 0; i < 1000000; i++) {
+			t = kt.get();
+			if (t < pt) {
+				throw new Error('KeepTime returns smaller time than last time.');
+			}
+			pt = t;
+		}
+		timeout = setTimeout(check5, 0);
 	}
 	var check3 = function() {
 		t5 = timer.get();
@@ -34,7 +62,7 @@
 		if ((t6 < 0) || (t6 > testTimeGrace)) {
 			throw new Error('KeepTime returns time greater than grace time immediately after reset.');
 		}
-		timeout = setTimeout(ok, 0);
+		timeout = setTimeout(check4, 0);
 	}
 	var check2 = function() {
 		t4 = timer.get();
@@ -49,6 +77,7 @@
 		timer.stop();
 		t2 = timer.get();
 		t3 = timer.get();
+		console.log(t1);
 		if (t1 < testTime) {
 			throw new Error('KeepTime returns time smaller than wait.');
 		}

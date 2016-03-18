@@ -13,17 +13,34 @@
  *  published by the Free Software Foundation.
  */
 
+'use strict';
+
+const hrtime = (function() {
+	if ((typeof process === 'object') && process && (typeof process.hrtime === 'function')) {
+		return process.hrtime;
+	} else {
+		var t0 = Date.now(), pt = 0;
+		return (function() {
+			var t = Date.now() - t0;
+			if (t <= pt) {
+				t = pt + 0.000001;
+			}
+			pt = t;
+			return [ Math.floor(t / 1000),
+					 Math.min(999999999, Math.max(0, (Math.floor(((t / 1000) - Math.floor((t / 1000))) * 1000000000)))) ];
+		});
+	}
+})();
+
 var KeepTime = function(autoStart) {
-    this.timerStart = process.hrtime();
+    this.timerStart = hrtime();
     this.timerStop = autoStart ? undefined : [ this.timerStart[0], this.timerStart[1] ];
 };
 
-var convertSecondsToReadable = undefined;
-
 KeepTime.prototype.get = function() {
-    var time = this.timerStop ? this.timerStop : process.hrtime();
+    var time = this.timerStop ? this.timerStop : hrtime();
     return (time[0] - this.timerStart[0]) + ((time[1] - this.timerStart[1]) * 0.000000001);
-}
+};
 
 KeepTime.prototype.set = function(seconds) {
 	seconds = parseFloat(seconds);
@@ -46,29 +63,28 @@ KeepTime.prototype.set = function(seconds) {
 			  Math.floor(Math.min(999999999, Math.max(0, -((seconds - Math.ceil(seconds)) * 1000000000)))) ];
 	}
 	this.timerStop = [0, 0];
-	console.log(this);
 	if (running) {
 		this.start();
 	}
-}
+};
 
 KeepTime.prototype.getArray = function() {
-    var time = this.timerStop ? this.timerStop : process.hrtime();
+    var time = this.timerStop ? this.timerStop : hrtime();
     var rv = [ time[0] - this.timerStart[0], time[1] - this.timerStart[1] ];
     if (rv[1] < 0) {
 		rv[0] -= 1;
 		rv[1] += 1000000000;
     }
     return rv;
-}
+};
 
 KeepTime.prototype.stop = function() {
     if (this.timerStop) {
 		return false;
     }
-    this.timerStop = process.hrtime();
+    this.timerStop = hrtime();
     return true;
-}
+};
 
 KeepTime.prototype.start = function() {
     if (! this.timerStop) {
@@ -79,7 +95,7 @@ KeepTime.prototype.start = function() {
 		diff[0] -= 1;
 		diff[1] += 1000000000;
     }
-    var time = process.hrtime();
+    var time = hrtime();
     this.timerStart = [ time[0] - diff[0], time[1] - diff[1] ];
     if (this.timerStart[1] < 0) {
 		this.timerStart[0] -= 1;
@@ -87,17 +103,20 @@ KeepTime.prototype.start = function() {
     }
     this.timerStop = undefined;
     return true;
-}
+};
 
 KeepTime.prototype.reset = function() {
-    this.timerStart = this.timerStop ? [ this.timerStop[0], this.timerStop[1] ] : process.hrtime();
-}
+    this.timerStart = this.timerStop ? [ this.timerStop[0], this.timerStop[1] ] : hrtime();
+};
 
-KeepTime.prototype.getReadable = function(decimals) {
-	if (convertSecondsToReadable === undefined) {
-		convertSecondsToReadable = require('./readable.js');
-	}
-	return convertSecondsToReadable(this.get(), decimals);
-}
+KeepTime.prototype.getReadable = (function() {
+	var csr = undefined;
+	return function(decimals) {
+		if (csr === undefined) {
+			csr = require('./readable.js');
+		}
+		return csr(this.get(), decimals);
+	};
+})();
 
 module.exports = KeepTime;
