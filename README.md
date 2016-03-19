@@ -101,6 +101,12 @@ run state of the timer (i.e. running timer remains running and stopped
 timer remains stopped).
 
 
+KeepTime.readable(seconds, decimals)
+------------------------------------
+
+A static version for converting a number of seconds to a readable
+string.
+
 Author
 ======
 
