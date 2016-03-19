@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = function(seconds, decimals) {
 	var s, m, h, d, st, dt, yt, ps, pm, ph, pd, pf, years, months, rv, i;
 	decimals = parseInt(decimals);

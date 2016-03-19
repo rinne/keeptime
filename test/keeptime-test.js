@@ -8,7 +8,7 @@
  *  published by the Free Software Foundation.
  */
 
-"use strict";
+'use strict';
 
 (function() {
 	var testTime = 0.5;
@@ -21,6 +21,25 @@
 		console.log('All OK. Runtime as readable string was: ' + globalTimer.getReadable(9));
 		process.exit(0);
 	}
+	var check6 = function() {
+		var y = ((new Date()).getUTCFullYear());
+		var t0 = Date.now() / 1000;
+		var t1 = Date.UTC(y + 1, 0, 1, 0, 0, 0, 0) / 1000;
+		console.log('Time passed after Unix epoch 1970-01-01 00:00:00 UTC is ' + 
+					t0.toFixed(3) +
+					' seconds, which in readable form is ' +
+					KeepTime.readable(t0, 3) +
+					'.');
+
+		console.log('Time left till end of the year ' + 
+					y.toFixed() +
+					' is ' +
+					(t1 - t0).toFixed(3) +
+					' seconds, which in readable form is ' +
+					KeepTime.readable(t1 - t0, 3) +
+					'.');
+		timeout = setTimeout(ok, 0);
+	}
 	var check5 = function() {
 		var i;
 		timer.stop();
@@ -30,7 +49,7 @@
 						(((i >= 0.9) && (i < 1000000999)) ? i.toFixed(0) : i.toPrecision(1)) +
 						's yields readable time as ' + timer.getReadable((i < 1) ? 9 : 0));
 		}
-		timeout = setTimeout(ok, 0);
+		timeout = setTimeout(check6, 0);
 	}
 	var check4 = function() {
 		var kt = new KeepTime();

@@ -15,27 +15,21 @@
 
 'use strict';
 
-const hrtime = (function() {
-	if ((typeof process === 'object') && process && (typeof process.hrtime === 'function')) {
-		return process.hrtime;
-	} else {
-		var t0 = Date.now(), pt = 0;
-		return (function() {
-			var t = Date.now() - t0;
-			if (t <= pt) {
-				t = pt + 0.000001;
-			}
-			pt = t;
-			return [ Math.floor(t / 1000),
-					 Math.min(999999999, Math.max(0, (Math.floor(((t / 1000) - Math.floor((t / 1000))) * 1000000000)))) ];
-		});
-	}
-})();
+var hrtime = require('./hrtime');
 
 var KeepTime = function(autoStart) {
     this.timerStart = hrtime();
     this.timerStop = autoStart ? undefined : [ this.timerStart[0], this.timerStart[1] ];
 };
+
+KeepTime.readable =  (function(csr) {
+	return function(seconds, decimals) {
+		if (csr === undefined) {
+			csr = require('./readable.js');
+		}
+		return csr(seconds, decimals);
+	};
+})();
 
 KeepTime.prototype.get = function() {
     var time = this.timerStop ? this.timerStop : hrtime();
@@ -109,14 +103,8 @@ KeepTime.prototype.reset = function() {
     this.timerStart = this.timerStop ? [ this.timerStop[0], this.timerStop[1] ] : hrtime();
 };
 
-KeepTime.prototype.getReadable = (function() {
-	var csr = undefined;
-	return function(decimals) {
-		if (csr === undefined) {
-			csr = require('./readable.js');
-		}
-		return csr(this.get(), decimals);
-	};
-})();
+KeepTime.prototype.getReadable = function(decimals) {
+	return KeepTime.readable(this.get(), decimals);
+};
 
 module.exports = KeepTime;
