@@ -31,6 +31,10 @@ KeepTime.readable =  (function(csr) {
 	};
 })();
 
+KeepTime.prototype.isRunning = function() {
+	return (this.timerStop ? false : true);
+};
+
 KeepTime.prototype.get = function() {
     var time = this.timerStop ? this.timerStop : hrtime();
     return (time[0] - this.timerStart[0]) + ((time[1] - this.timerStart[1]) * 0.000000001);

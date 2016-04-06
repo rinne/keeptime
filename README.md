@@ -100,6 +100,10 @@ Reset the time of the timer to zero. The call does not affect on the
 run state of the timer (i.e. running timer remains running and stopped
 timer remains stopped).
 
+KeepTime.prototype.isRunning()
+------------------------------
+
+Return true if the timer is running, false if it's stopped.
 
 KeepTime.readable(seconds, decimals)
 ------------------------------------
