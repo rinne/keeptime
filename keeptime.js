@@ -22,6 +22,10 @@ var KeepTime = function(autoStart) {
     this.timerStop = autoStart ? undefined : [ this.timerStart[0], this.timerStart[1] ];
 };
 
+KeepTime.isKeepTime = function(maybeKeepTime) {
+	return ((maybeKeepTime && (maybeKeepTime instanceof KeepTime)) ? true : false);
+};
+
 KeepTime.readable =  (function(csr) {
 	return function(seconds, decimals) {
 		if (csr === undefined) {
@@ -30,6 +34,10 @@ KeepTime.readable =  (function(csr) {
 		return csr(seconds, decimals);
 	};
 })();
+
+KeepTime.prototype.toString = function() {
+	return this.getReadable(6);
+};
 
 KeepTime.prototype.isRunning = function() {
 	return (this.timerStop ? false : true);

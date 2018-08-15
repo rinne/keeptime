@@ -24,8 +24,15 @@
 		});
 	}
 
+	if (! KeepTime.isKeepTime(globalTimer)) {
+		throw new Error('KeepTime object not recognized by KeepTime.isKeepTime()');
+	}
+	(([ KeepTime, true, false, null, undefined, [], 42, 0, { a: 'b' }, new Date() ]).forEach(function(x) {
+		if (KeepTime.isKeepTime(x)) {
+			throw new Error('Non-KeepTime object recognized as a timer by KeepTime.isKeepTime(): ' + JSON.stringify(x));
+		}
+	}));
 	timer = new KeepTime(true);
-
 	(delayedResolve(testTime)
 	 .then(function() {
 		 console.log('Test #' + ++testNumber);
